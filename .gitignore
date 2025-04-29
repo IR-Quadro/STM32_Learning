@@ -1,0 +1,29 @@
+# Keil build files
+*.axf
+*.hex
+*.bin
+*.lst
+*.map
+*.o
+*.crf
+*.d
+*.dep
+*.iex
+*.sct
+*.tra
+
+# CubeMX generated
+*.ioc
+
+# Backup files
+*~ 
+*.bak
+
+# Object and debug folders
+Debug/
+Objects/
+Listings/
+
+# System-specific
+.DS_Store
+Thumbs.db
