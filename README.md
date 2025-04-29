@@ -13,3 +13,5 @@ Each folder will include:
 - Keil project files
 - Source code (C)
 
+ [![Bluepillpinout.webp](https://i.postimg.cc/90jDcpS9/Bluepillpinout.webp)](https://postimg.cc/bD3yTQqY)
+
