@@ -1,0 +1,22 @@
+--cpu Cortex-M3
+"e1_gpio\startup_stm32f103xb.o"
+"e1_gpio\main.o"
+"e1_gpio\gpio.o"
+"e1_gpio\stm32f1xx_it.o"
+"e1_gpio\stm32f1xx_hal_msp.o"
+"e1_gpio\stm32f1xx_hal_gpio_ex.o"
+"e1_gpio\stm32f1xx_hal.o"
+"e1_gpio\stm32f1xx_hal_rcc.o"
+"e1_gpio\stm32f1xx_hal_rcc_ex.o"
+"e1_gpio\stm32f1xx_hal_gpio.o"
+"e1_gpio\stm32f1xx_hal_dma.o"
+"e1_gpio\stm32f1xx_hal_cortex.o"
+"e1_gpio\stm32f1xx_hal_pwr.o"
+"e1_gpio\stm32f1xx_hal_flash.o"
+"e1_gpio\stm32f1xx_hal_flash_ex.o"
+"e1_gpio\stm32f1xx_hal_exti.o"
+"e1_gpio\system_stm32f1xx.o"
+--strict --scatter "E1_GPIO\E1_GPIO.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "E1_GPIO.map" -o E1_GPIO\E1_GPIO.axf
