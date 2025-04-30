@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"e2_lcd-i2c\startup_stm32f103xb.o"
+"e2_lcd-i2c\main.o"
+"e2_lcd-i2c\gpio.o"
+"e2_lcd-i2c\i2c.o"
+"e2_lcd-i2c\stm32f1xx_it.o"
+"e2_lcd-i2c\stm32f1xx_hal_msp.o"
+"e2_lcd-i2c\i2c_lcd.o"
+"e2_lcd-i2c\stm32f1xx_hal_gpio_ex.o"
+"e2_lcd-i2c\stm32f1xx_hal_i2c.o"
+"e2_lcd-i2c\stm32f1xx_hal.o"
+"e2_lcd-i2c\stm32f1xx_hal_rcc.o"
+"e2_lcd-i2c\stm32f1xx_hal_rcc_ex.o"
+"e2_lcd-i2c\stm32f1xx_hal_gpio.o"
+"e2_lcd-i2c\stm32f1xx_hal_dma.o"
+"e2_lcd-i2c\stm32f1xx_hal_cortex.o"
+"e2_lcd-i2c\stm32f1xx_hal_pwr.o"
+"e2_lcd-i2c\stm32f1xx_hal_flash.o"
+"e2_lcd-i2c\stm32f1xx_hal_flash_ex.o"
+"e2_lcd-i2c\stm32f1xx_hal_exti.o"
+"e2_lcd-i2c\system_stm32f1xx.o"
+--strict --scatter "E2_LCD-I2C\E2_LCD-I2C.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "E2_LCD-I2C.map" -o E2_LCD-I2C\E2_LCD-I2C.axf
