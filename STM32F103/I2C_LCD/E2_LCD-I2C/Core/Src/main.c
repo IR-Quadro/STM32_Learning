@@ -48,10 +48,29 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-	char microName[]  = "STM32F103C8T6";
-	char timerStr[16]; 
 	
-	uint16_t timer = 5;
+	uint8_t smiley[8] = {
+  0b00000,
+  0b01010,
+  0b01010,
+  0b00000,
+  0b00000,
+  0b10001,
+  0b01110,
+  0b00000
+};
+	
+	uint8_t spekaer[8] = {
+	0B00001,
+  0B00011,
+  0B00111,
+  0B11111,
+  0B11111,
+  0B00111,
+  0B00011,
+  0B00001
+	};
+	
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,32 +111,31 @@ int main(void)
 
   /* USER CODE END SysInit */
 
-  /* Initialize all configured peripherals */
+  /* Initialize all configured peripherals */	
   MX_GPIO_Init();
-  MX_I2C1_Init();
-  /* USER CODE BEGIN 2 */
-  /* USER CODE END 2 */
-	lcd_init();
+  MX_I2C1_Init();	
+	
+  /* USER CODE BEGIN 2 */	
+	lcd_init();	
+  /* USER CODE END 2 */	
+	
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	
   while (1)
   {
-		if(timer > 0)
-		{
-		lcd_clear();
-		lcd_send_string(microName);
-		sprintf(timerStr, "Timer: %u", timer);
-		lcd_put_cursor(1, 0);
-		lcd_send_string(timerStr);
-		HAL_Delay(1000);
-		timer--;
-		}
-		else
-		{
-			lcd_clear();
-			lcd_send_string("Timer Stop!");
-			HAL_Delay(1000);
-		}
+		lcd_send_custom_char(0, smiley);
+		lcd_send_custom_char(1, spekaer);
+		
+		lcd_put_cursor(0, 3);
+		lcd_send_data(0);
+		
+		lcd_put_cursor(0, 6);
+		lcd_send_data(1);
+		
+		lcd_scroll_text_from_right("Hello from STM32, Compile by Keil", 1, 400);
+
+		HAL_Delay(200);
 				
     /* USER CODE END WHILE */
 

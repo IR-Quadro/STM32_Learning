@@ -103,6 +103,7 @@ void lcd_send_string(char *str)
     while (*str) lcd_send_data(*str++); // Send each character of the string
 }
 
+
 // Function to scan I2C addresses
 uint8_t scan_i2c_address(void)
 {
@@ -121,3 +122,111 @@ uint8_t scan_i2c_address(void)
     printf("No I2C devices found.\n");
     return 0;
 }
+
+
+
+// ==============================> The functions added by me in this library. <============================//
+
+
+// Fuction to send a custom char to the LCD
+void lcd_send_custom_char(uint8_t location, const uint8_t *charmap)
+{
+	location &= 0x07;
+	lcd_send_cmd(0x40 | (location << 3));
+	
+	for(uint8_t i = 0 ; i < 8 ; i++)
+	{
+		lcd_send_data(charmap[i]);
+	}
+}
+
+
+// Fuction to Scroll a String to LCD
+void lcd_scroll_text(const char *text, uint8_t row, uint16_t delay_ms)
+{
+    // Calculate the length of the input text
+    uint8_t len = strlen(text);
+    
+    // If the text is shorter or equal to the number of LCD columns, print it directly
+    if(len <= LCD_COLS)
+    {
+        // Set the cursor to the specified row, column 0 (start of the line)
+        lcd_put_cursor(row, 0);
+        
+        // Send the string to the LCD
+        lcd_send_string((char *)text);
+    }
+    else
+    {
+        // If the text is longer than the screen, scroll it across the LCD
+        // Loop over the text, displaying a portion of it at a time
+        for(uint8_t i = 0; i <= len - LCD_COLS; i++)
+        {
+            // Set the cursor to the specified row, column 0 (start of the line)
+            lcd_put_cursor(row, 0);
+            
+            // Loop through the characters in the current scroll window (LCD_COLS characters)
+            for(uint8_t j = 0; j < LCD_COLS; j++)
+            {
+                // Send each character of the current window to the LCD
+                lcd_send_data(text[i + j]);
+            }
+            
+            // Delay for the specified amount of time before displaying the next part of the text
+            HAL_Delay(delay_ms);
+        }
+    }
+}
+
+
+
+// Scrolls the given text from right to left on a specific LCD row.
+// The text starts off-screen (from the right) and scrolls leftwards into view.
+void lcd_scroll_text_from_right(const char *text, uint8_t row, uint16_t delay_ms)
+{
+    // Get the length of the input text
+    uint8_t len = strlen(text);
+
+    // Calculate the total length of the scroll buffer:
+    // Extra (LCD_COLS - 1) spaces are added before the text to simulate entry from the right
+    uint8_t buffer_len = len + LCD_COLS - 1;
+
+    // Create a temporary buffer to hold spaces + text
+    char buffer[buffer_len];
+
+    // Fill the beginning of the buffer with spaces to simulate off-screen entry
+    for (uint8_t i = 0; i < LCD_COLS - 1; i++)
+    {
+        buffer[i] = ' ';
+    }
+
+    // Copy the original text after the initial spaces
+    strcpy(buffer + LCD_COLS - 1, text);
+
+    // If the text fits within the LCD width, simply display it aligned from the right
+    if (len <= LCD_COLS)
+    {
+        // Move the cursor so that the text is right-aligned on the LCD
+        lcd_put_cursor(row, LCD_COLS - len); 
+        lcd_send_string((char *)text); // Display the text
+    }
+    else
+    {
+        // Scroll the text across the LCD screen from right to left
+        for (uint8_t i = 0; i <= buffer_len - LCD_COLS; i++)
+        {
+            // Always write to the beginning of the specified row
+            lcd_put_cursor(row, 0);
+
+            // Display 16 characters (LCD_COLS) from the buffer starting at position i
+            for (uint8_t j = 0; j < LCD_COLS; j++)
+            {
+                lcd_send_data(buffer[i + j]);
+            }
+
+            // Delay between scroll steps
+            HAL_Delay(delay_ms);
+        }
+    }
+}
+

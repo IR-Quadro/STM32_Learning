@@ -3,10 +3,13 @@
 
 #include <stdint.h> // For standard integer types
 #include <stdio.h>
+#include <string.h>
 #include "i2c.h"
 
 // I2C address of the LCD (change according to your setup)
 #define SLAVE_ADDRESS_LCD 0x3F // => 0x3F (default Address)
+
+#define LCD_COLS 16
 
 // LCD command definitions
 #define LCD_CMD_CLEAR_DISPLAY     0x01
@@ -78,5 +81,15 @@ void lcd_clear(void);
  * @return The I2C address if found, otherwise 0.
  */
 uint8_t scan_i2c_address(void);
+
+
+// ==============================> The functions added by me in this library. <============================//
+
+void lcd_send_custom_char(uint8_t location, const uint8_t *charmap);
+
+void lcd_scroll_text(const char *text, uint8_t row, uint16_t delay_ms);
+
+void lcd_scroll_text_from_right(const char *text, uint8_t row, uint16_t delay_ms);
+
 
 #endif /* I2C_LCD_H */
