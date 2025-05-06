@@ -122,8 +122,12 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	
+	LcdStartScroll("Hello from STM32, Write by Linux", 0, 400);
+	
   while (1)
   {
+		LcdUpdateScroll();
+		/*
 		lcd_send_custom_char(0, smiley);
 		lcd_send_custom_char(1, spekaer);
 		
@@ -136,6 +140,7 @@ int main(void)
 		lcd_scroll_text_from_right("Hello from STM32, Compile by Keil", 1, 400);
 
 		HAL_Delay(200);
+		*/
 				
     /* USER CODE END WHILE */
 

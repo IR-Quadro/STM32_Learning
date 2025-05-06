@@ -230,3 +230,67 @@ void lcd_scroll_text_from_right(const char *text, uint8_t row, uint16_t delay_ms
     }
 }
 
+// =========================> non-Bloking Scroll <======================== //
+
+typedef struct {
+	
+	const char *text;
+	uint8_t row;
+	uint8_t index;
+	uint8_t isActive;
+	uint16_t delay_ms;
+	uint32_t last_tick;
+	
+} LcdScrollContext;
+
+LcdScrollContext scroll_ctx;
+
+
+void LcdStartScroll(const char *text, uint8_t row, uint16_t delay_ms)
+{
+	scroll_ctx.text = text;
+	scroll_ctx.row  = row;
+	scroll_ctx.index = 0;
+	scroll_ctx.last_tick = HAL_GetTick();
+	scroll_ctx.delay_ms  = delay_ms;
+	scroll_ctx.isActive = 1;
+}
+
+void LcdUpdateScroll()
+{
+	if(!scroll_ctx.isActive) return;
+	
+	uint8_t len = strlen(scroll_ctx.text);
+	uint8_t buffer_len = len + LCD_COLS - 1;
+	char buffer[buffer_len];
+	
+	for(uint8_t i = 0 ; i < LCD_COLS - 1 ; i++)
+	{
+		buffer[i] = ' ';
+	}
+	
+	strcpy(buffer + LCD_COLS - 1, scroll_ctx.text);
+	
+	if(HAL_GetTick() - scroll_ctx.last_tick >= scroll_ctx.delay_ms)
+	{
+		scroll_ctx.last_tick = HAL_GetTick();
+		
+		if(scroll_ctx.index <= buffer_len - LCD_COLS)
+		{
+			lcd_put_cursor(scroll_ctx.row, 0);
+			
+			for(uint8_t j = 0 ; j < LCD_COLS ; j++)
+			{
+				lcd_send_data(buffer[scroll_ctx.index + j]);
+			}
+			
+			scroll_ctx.index++;
+		}
+		
+		else
+		{
+			scroll_ctx.isActive = 0;
+		}
+	}
+}
+

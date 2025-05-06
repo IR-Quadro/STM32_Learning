@@ -91,5 +91,7 @@ void lcd_scroll_text(const char *text, uint8_t row, uint16_t delay_ms);
 
 void lcd_scroll_text_from_right(const char *text, uint8_t row, uint16_t delay_ms);
 
+void LcdStartScroll(const char *text, uint8_t row, uint16_t delay_ms);
 
+void LcdUpdateScroll();
 #endif /* I2C_LCD_H */
