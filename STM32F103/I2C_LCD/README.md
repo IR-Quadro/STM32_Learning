@@ -74,4 +74,46 @@ This section details the functions that have been added to the library to provid
     ```
     If the length of the text is less than or equal to the number of LCD columns, the text will be displayed right-aligned on the specified row without scrolling.
 
+---
+
+## non-blocking scrolling
+
+```c
+LcdStartScroll(const char *text, uint8_t row, uint16_t delay_ms)
+```
+
+This function initializes a non-blocking scrolling operation for a text string across a specified row. The scrolling occurs from right to left, and the update must be triggered manually via LcdUpdateScroll().
+
+text: A pointer to the string to scroll.
+
+row: The LCD row (typically 0 or 1).
+
+delay_ms: Delay between scroll steps in milliseconds (controls scroll speed).
+
+LcdUpdateScroll(void)
+This function must be called periodically in the main loop to update the scroll animation. It checks the timing using HAL_GetTick() and updates the LCD content accordingly.
+
+The update stops automatically after the entire text scrolls through the display.
+
+⚠️ Important Notes:
+
+These functions are designed to be non-blocking, meaning they don't use delay or halt your program.
+
+Make sure LcdUpdateScroll() is called frequently (e.g., in your while(1) loop or from a timer-driven task).
+
+Avoid placing long HAL_Delay() calls or blocking operations that can delay the update.
+
+**How to Use:**
+```c
+LcdStartScroll("Welcome to my project!", 0, 200);
+
+while (1)
+{
+    LcdUpdateScroll(); // Call this regularly
+    // Your other code...
+}
+```
+
+🧠 Tip:
+If you're building a real-time system, call LcdUpdateScroll() within your task scheduler or timer tick routine for smooth performance.
 
