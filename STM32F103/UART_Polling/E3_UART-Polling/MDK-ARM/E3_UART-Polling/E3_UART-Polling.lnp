@@ -1,0 +1,24 @@
+--cpu Cortex-M3
+"e3_uart-polling\startup_stm32f103xb.o"
+"e3_uart-polling\main.o"
+"e3_uart-polling\gpio.o"
+"e3_uart-polling\usart.o"
+"e3_uart-polling\stm32f1xx_it.o"
+"e3_uart-polling\stm32f1xx_hal_msp.o"
+"e3_uart-polling\stm32f1xx_hal_gpio_ex.o"
+"e3_uart-polling\stm32f1xx_hal_uart.o"
+"e3_uart-polling\stm32f1xx_hal.o"
+"e3_uart-polling\stm32f1xx_hal_rcc.o"
+"e3_uart-polling\stm32f1xx_hal_rcc_ex.o"
+"e3_uart-polling\stm32f1xx_hal_gpio.o"
+"e3_uart-polling\stm32f1xx_hal_dma.o"
+"e3_uart-polling\stm32f1xx_hal_cortex.o"
+"e3_uart-polling\stm32f1xx_hal_pwr.o"
+"e3_uart-polling\stm32f1xx_hal_flash.o"
+"e3_uart-polling\stm32f1xx_hal_flash_ex.o"
+"e3_uart-polling\stm32f1xx_hal_exti.o"
+"e3_uart-polling\system_stm32f1xx.o"
+--strict --scatter "E3_UART-Polling\E3_UART-Polling.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "E3_UART-Polling.map" -o E3_UART-Polling\E3_UART-Polling.axf

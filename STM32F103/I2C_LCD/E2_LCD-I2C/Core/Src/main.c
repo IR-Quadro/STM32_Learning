@@ -71,6 +71,28 @@
   0B00001
 	};
 	
+	uint8_t one[] = {
+  0B11111,
+  0B11011,
+  0B10011,
+  0B11011,
+  0B11011,
+  0B11011,
+  0B10001,
+  0B11111
+};
+	
+uint8_t two[] = {
+  0B11111,
+  0B10001,
+  0B10101,
+  0B11101,
+  0B11011,
+  0B10111,
+  0B10001,
+  0B11111
+};
+	
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -127,9 +149,20 @@ int main(void)
   while (1)
   {
 		LcdUpdateScroll();
+		
+		lcd_send_custom_char(0, one);
+		lcd_send_custom_char(1, two);
+		
+		lcd_put_cursor(1, 5);
+		lcd_send_data(0);
+		
+		lcd_put_cursor(1, 7);
+		lcd_send_data(1);
+		
 		/*
 		lcd_send_custom_char(0, smiley);
 		lcd_send_custom_char(1, spekaer);
+		
 		
 		lcd_put_cursor(0, 3);
 		lcd_send_data(0);

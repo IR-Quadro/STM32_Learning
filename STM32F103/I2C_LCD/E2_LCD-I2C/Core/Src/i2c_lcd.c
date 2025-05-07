@@ -230,7 +230,7 @@ void lcd_scroll_text_from_right(const char *text, uint8_t row, uint16_t delay_ms
     }
 }
 
-// =========================> non-Bloking Scroll <======================== //
+// =========================> non-Blocking Scroll <======================== //
 
 typedef struct {
 	
