@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 
 #include <string.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 /* USER CODE END Includes */
@@ -53,6 +54,11 @@ char messageOff[] = "LED off\r\n";
 char messageInvalid[]  = "Invalid Command\r\n";
 
 uint8_t uart1_rx;
+
+uint8_t uart1_rx_buffer[15];
+uint8_t uart1_rx_index = 0;
+
+bool uart1_rx_flag = false;
 
 /* USER CODE END PV */
 
@@ -108,17 +114,37 @@ int main(void)
 		
 		HAL_UART_Receive(&huart1, &uart1_rx, 1, HAL_MAX_DELAY);
 		
-		if(uart1_rx == '1')
+		if(uart1_rx == '\r' || uart1_rx == '\n')
 		{
-			HAL_UART_Transmit(&huart1, (uint8_t *)messageOn, strlen(messageOn), HAL_MAX_DELAY);
-		}
-		else if(uart1_rx == '0')
-		{
-			HAL_UART_Transmit(&huart1, (uint8_t *)messageOff, strlen(messageOff), HAL_MAX_DELAY);
+			if(uart1_rx_index > 0) uart1_rx_flag = true;			 
 		}
 		else
 		{
-			HAL_UART_Transmit(&huart1, (uint8_t *)messageInvalid, strlen(messageInvalid), HAL_MAX_DELAY);
+			 uart1_rx_buffer[uart1_rx_index++] = uart1_rx;
+		}
+		
+				
+		if(uart1_rx_flag)
+		{
+			uart1_rx_buffer[uart1_rx_index] = '\0';
+			uart1_rx_flag  = false;
+			uart1_rx_index = 0;
+			
+			if(strcmp((char*) uart1_rx_buffer, "on") == 0)
+			{
+				HAL_UART_Transmit(&huart1, (uint8_t *)messageOn, strlen(messageOn), HAL_MAX_DELAY);
+			}
+			else if(strcmp((char*) uart1_rx_buffer, "off") == 0)
+			{
+				HAL_UART_Transmit(&huart1, (uint8_t *)messageOff, strlen(messageOff), HAL_MAX_DELAY);
+			}
+			else
+			{
+				HAL_UART_Transmit(&huart1, (uint8_t *)messageInvalid, strlen(messageInvalid), HAL_MAX_DELAY);
+			}
+			
+			memset(uart1_rx_buffer, 0, sizeof(uart1_rx_buffer));
+						
 		}
 		
     /* USER CODE END WHILE */
